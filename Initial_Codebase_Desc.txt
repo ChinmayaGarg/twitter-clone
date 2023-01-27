@@ -1,0 +1,57 @@
+What files and folders does "create t3-app" entails?
+1. prisma Directory/Folder
+	a. Prisma schema: Inside Prisma Directory we have Prisma Schema
+		- We use sqlite out of the box (as default by create t3-app)
+
+2. public directory
+	a. favicon.ico
+
+3. src directory
+	a. env directory: We have some environment variables and schemas.
+		i.   client.mjs: This contains some environment variables for client
+		ii.  schema.mjs: This contains some schemas for server environment variables and client environment variables
+		iii. server.mjs: This contains environment variables for server
+	
+	b. pages directory
+		i. api directory: NextJS standard/rule
+			-- auth directory
+					- [...nextauth].ts: Is used to setup all of the authentication providers
+										For this tutorial we will only use the Discord Provider that comes with create t3-app, 
+										because discord is very easy to get started with. We don't need to do any work
+										here, because we don't use the Provider that create t3-app comes with.
+			-- trpc directory
+					- [trpc].ts: This is going to create NEXT API handler. We don't need to do any work
+								 here, because we don't use the Provider that create t3-app comes with.
+		
+		ii. _app.tsx: This includes a Session Provider and our Component. We are going to do a little work inside _app.
+					  We are just going to wrap our component in a main and a container.
+		
+		iii. index.tsx: This is going to house our timeline. This files comes with default example. We have example query  
+						example.hello. Hello query is being called from example router on line 9 from 
+						src -> server -> api -> routers -> example.ts
+
+	c. server directory
+		i. api -> routers 
+			a. example.ts: It contains hello router which is being queried from index.js in pages directory.
+										 It also has getAll which is going to find all of our Prisma example files
+										 [If we open up Prisma schema (prisma -> schema.prisma) we will find model for Example]
+ 
+			b. trpc.ts: Earlier there used to be 2 files context.ts and trpc.ts. Now both have been merged in one file.
+				 		Context.ts: Earlier below was done in context.ts but now it is done in trpc.ts
+							This will be used to build context for each request.
+							We have session which comes from getServerAuthSession function, and then we put that session into 
+							context, which means session is going to be available on all requests. 
+							We also have Prisma in trpc.ts, and Prisma is imported from "../db" and Prisma will also be 
+							going to be available on each request.
+						trpc.ts: We have 2 helpful procedures.
+							1. Public Procedure: We will use this to create routes that are open to public meaning they
+												 are not authenticated.
+							2. Private Procedure: We will use this to create routes where we require user to be authenticated.
+
+	d. styles directory
+		i. global.css: We have tailwind installed here.
+
+	f. utils directory
+		i. api.ts: The api being exported is what we will be using on our client to make requests to our api/trpc routers.
+
+		
